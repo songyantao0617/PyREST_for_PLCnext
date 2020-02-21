@@ -122,9 +122,19 @@ class ReadGroup(object):
         self._prefix_BACKUP = prefix
 
     @property
-    def results(self):
+    def results_dict(self):
         self._Read()
         return self._Results
+
+    @property
+    def results_list(self):
+        _res = self.results_dict
+        _resultList = list()
+        for var in self._varName_BACKUP:
+            _resultList.append(_res.get(var,None))
+        return _resultList
+
+
 
     def __getitem__(self, item):
         self._Read()

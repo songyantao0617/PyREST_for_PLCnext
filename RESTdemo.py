@@ -78,9 +78,15 @@ def Demo():
     print('输出组内所有成员值:')
     for i in range(2):
         WriteData()
-        print('\t' + str(GlobalGroup.results))
-        print('\t' + str(MainInstanceGroup.results))
+        print('\t' + str(GlobalGroup.results_dict))
+        print('\t' + str(MainInstanceGroup.results_dict))
         print('\t------')
+
+
+    # This method is more useful
+    print('Use \'results_list\' method can get list directly: ')
+    val_A , val_B , val_C = GlobalGroup.results_list
+    print('\tval_A : {}\tval_B : {}\tval_C : {}'.format( val_A , val_B , val_C))
     print('*' * 100)
 
 
