@@ -3,7 +3,7 @@ import os
 import random
 import com.Phoenixcontact.REST as PLCnREST
 import com.Phoenixcontact.utils as PLCnUtils
-from com.Phoenixcontact.REST.RESTException import RESTException
+
 '''
 --PhoenixContect-China
 --STE : SongYantao@Phoenixcontact.com.cn
@@ -52,7 +52,7 @@ def Demo():
     print('If there is no variable called \'AAA\',you will see the following message')
     try:
         errorGroup = client.registerReadGroups(['AAA'])
-    except RESTException as E:
+    except PLCnREST.RESTException as E:
         print('\t{}'.format(E.message))
 
 
