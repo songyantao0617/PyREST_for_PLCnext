@@ -23,7 +23,7 @@ Notice :
         |-A (DWORD)
         |-B (TIME)
         |-C (BOOL)
-        |
+        |-F (LINT)
         |---MainInstance
            |-Value1 (INT)
            |-Value2 (REAL)
