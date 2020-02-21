@@ -17,7 +17,7 @@ Notice :
     Variables on PLC should have HMI_tag
     EHMI is required ,just create an empty page
     
-    set thw following vars in PLC
+    set the following vars in PLC
     
      |---global    
         |-A (DWORD)
