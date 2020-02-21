@@ -2,7 +2,7 @@ songyantao@phoenixcontact.com.cn
 
 **Now for internal use only**
 
-##set up variables on PLC and give them HMI_Tag :
+## set up variables on PLC and give them HMI_Tag :
 
   ```
          |---global    
