@@ -8,3 +8,8 @@
 2020-02-21 Friday 21:44:36  [INFO]:  _RegisterGroup  Group ID : g2822857985
 2020-02-21 Friday 21:44:36  [INFO]:  _RegisterGroup  Group ID : g2922858174
 2020-02-21 Friday 21:44:36  [ERROR]:  _RegisterGroup  invalidNames
+2020-02-21 Friday 22:55:57  [INFO]:  connect  Connecting...
+2020-02-21 Friday 22:55:57  [INFO]:  connect  Connect success
+2020-02-21 Friday 22:55:57  [INFO]:  _RegisterGroup  Group ID : g2822857985
+2020-02-21 Friday 22:55:57  [INFO]:  _RegisterGroup  Group ID : g2922858174
+2020-02-21 Friday 22:55:57  [ERROR]:  _RegisterGroup  invalidNames
