@@ -1,5 +1,25 @@
 songyantao@phoenixcontact.com.cn
 
+**Now for internal use only**
+
+##set up variables on PLC and give them HMI_Tag :
+
+  ```
+         |---global    
+            |-A (DWORD)
+            |-B (TIME)
+            |-C (BOOL)
+            |
+            |---MainInstance
+               |-Value1 (INT)
+               |-Value2 (REAL)
+               |-Value3 (STRING)
+
+```  
+
+## Run `RESTdemp.py`
+
+output:
 ```
 
 异常处理实验
