@@ -65,7 +65,7 @@ class DataGroup(object):
             logging.error(_reason)
             raise RESTException(_reason)
         elif _status_code == 401:  # 令牌不正确loads
-            ReadGroup.clientInfo.accessToken = None
+            ReadGroup.Client.accessToken = None
             _reason = _hearders.get('WWW-Authenticate')
             logging.error(_reason)
             raise RESTException(_reason)  # Bearer realm="pxcapi", error="invalid_token"

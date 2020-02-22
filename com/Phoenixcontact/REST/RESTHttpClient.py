@@ -9,8 +9,10 @@ class RESTHttpclient(HttpClient):
 
 
     def invokeAPI(self, httpMethod, function_uri, payload, Params=None, headers_=None):
+
         self.Client._acvite = True
         if self.Client.sessionMode and self.Client._Session.sessionID != None:
+
             if Params == None:
                 Params = dict()
             Params[RestConstant.SESSIONID] = self.Client._Session.sessionID
@@ -26,8 +28,7 @@ class RESTHttpclient(HttpClient):
                 headers = {
                     RestConstant.HEADER_TYPE: RestConstant.HEADER_TYPE_JSON,
                     RestConstant.HEADER_AUTH: RestConstant.HEADER_BEARER + self.Client.accessToken,
-                    'Connection': 'keep-alive',
-                    'Cache-Control': 'no-cache'
+                    'Connection': 'keep-alive'
                 }
             headers_ = headers
 

@@ -17,9 +17,9 @@ class RestConstant(object):
 
     ACCESS_TOCKEN_URI = '_pxc_api/auth/access-token'
 
-    REPORT_GROUP_URI = '_pxc_api/api/groups'
-    REGISTER_GROUP_URI = '_pxc_api/api/groups'
-    READ_GROUP_URI = '_pxc_api/api/groups/'
+    REPORT_GROUP_URI = '_pxc_api/v1.1/groups'
+    REGISTER_GROUP_URI = '_pxc_api/v1.1/groups/'
+    READ_GROUP_URI = '_pxc_api/v1.1/groups/'
     # UNREGISTER_GROUP_URI = '_pxc_api/api/groups/'
 
     READ_VARIABLES_GET_URI = '_pxc_api/api/variables'
