@@ -128,5 +128,5 @@ class NewClient(ClientInfo):
                     raise E
 
     def _reConnect(self):
-        logging.INFO('Try to reconnect... ')
+        logging.info('Try to reconnect... ')
         return self.connect()
