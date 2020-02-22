@@ -1,7 +1,6 @@
 songyantao@phoenixcontact.com.cn
 
-**Now for internal use only**
-
+**Now for internal use only**  V0.3 
 ## set up variables on PLC and give them HMI_Tag :
 
   ```

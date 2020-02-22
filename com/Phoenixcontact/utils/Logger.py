@@ -1,8 +1,8 @@
 import logging
 import os
 from logging.handlers import RotatingFileHandler
-from com.Phoenixcontact.default import DefaultValue
 
+from com.Phoenixcontact.default import DefaultValue
 
 
 class Log(object):

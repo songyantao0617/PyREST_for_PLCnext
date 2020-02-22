@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+
 import com.Phoenixcontact.REST as PLCnREST
 import com.Phoenixcontact.utils as PLCnUtils
 
@@ -8,7 +9,7 @@ import com.Phoenixcontact.utils as PLCnUtils
 --PhoenixContect-China
 --STE : SongYantao@Phoenixcontact.com.cn
 
-Version :   V0.2
+Version :   V0.3
 
 Notice : 
 
@@ -30,14 +31,14 @@ Notice :
            |-Value3 (STRING)
 '''
 
+
 def Demo():
-
-
     # 创建客户端
     # Create a client attach to PLCnext
     client = PLCnREST.NewClient('192.168.124.10')
     client.PLCnUserName = 'admin'
     client.PLCnPasswd = '42bad0fd'
+    client.sessionMode = True
     client.connect()
 
     # 创建读取组(方便管理)
@@ -54,7 +55,6 @@ def Demo():
         errorGroup = client.registerReadGroups(['AAA'])
     except PLCnREST.RESTException as E:
         print('\t{}'.format(E.message))
-
 
     def WriteData():
         # 写变量
@@ -82,17 +82,15 @@ def Demo():
         print('\t' + str(MainInstanceGroup.results_dict))
         print('\t------')
 
-
     # This method is more useful
     print('Use \'results_list\' method can get list directly: ')
-    val_A , val_B , val_C = GlobalGroup.results_list
-    print('\tval_A : {}\tval_B : {}\tval_C : {}'.format( val_A , val_B , val_C))
+    val_A, val_B, val_C = GlobalGroup.results_list
+    print('\tval_A : {}\tval_B : {}\tval_C : {}'.format(val_A, val_B, val_C))
     print('*' * 100)
 
-
     # 从组内提取单个变量值：
-    #Or we just want only one variable's value of group
-    #But Notice it will handle requests everytime we call,this is just an additional function in some situation
+    # Or we just want only one variable's value of group
+    # But Notice it will handle requests everytime we call,this is just an additional function in some situation
     print("Get values by \"group['member']\" ")
     print('直接从组内提出某一变量值')
     print('\tA : {}\tB : {}\tC:{}'.format(GlobalGroup['A'], GlobalGroup['B'], GlobalGroup['C']))
@@ -102,7 +100,8 @@ def Demo():
     print('\t------')
     for i in range(2):
         WriteData()
-        print('\tA : {}\tC : {}\tvalue3:{}'.format(GlobalGroup['A'], GlobalGroup['C'],MainInstanceGroup['MainInstance.Value3']))
+        print('\tA : {}\tC : {}\tvalue3:{}'.format(GlobalGroup['A'], GlobalGroup['C'],
+                                                   MainInstanceGroup['MainInstance.Value3']))
         print('\t------')
     print('*' * 100)
 
@@ -124,7 +123,7 @@ def Demo():
     print('*' * 100)
 
     # 显示客户端的所有组信息
-    #show the group information belongs to client
+    # show the group information belongs to client
     print('show the group information belongs to client:')
     print('显示客户端的所有组信息')
     print('\t{}'.format(client.reportGroups()))
@@ -138,7 +137,7 @@ if __name__ == '__main__':
     _localpath = os.path.split(os.path.abspath(__file__))[0]
     _logpath = os.path.join(_localpath, 'log/')
     log = PLCnUtils.Logger.Log()
-    log.setLogConfig(level=logging.INFO, logPath=_logpath, logFilename='Outputs.log')
+    log.setLogConfig(level=logging.DEBUG, logPath=_logpath, logFilename='Outputs.log')
 
     # start Demo
     Demo()

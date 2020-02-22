@@ -8,19 +8,20 @@ from com.Phoenixcontact.REST.RESTHttpClient import *
 
 class DataGroup(object):
 
-    @staticmethod
+    def __init__(self, Client):
+        self.Client = Client
+
     def _RegisterGroup(self, variableNames, pathPrefix=RestConstant.PATHPREFIX):
-        if self.accessToken == None:
+        if self.Client.accessToken == None:
             return
 
         _payload = {
             'pathPrefix': pathPrefix,
             'paths': variableNames
         }
-        _status_code, _hearders, _text = RESTHttpClient.invokeAPI(httpMethod=RestConstant.POST,
-                                                                  function_uri=RestConstant.REGISTER_GROUP_URI,
-                                                                  clientInfo=self,
-                                                                  payload=json.dumps(_payload))
+        _status_code, _hearders, _text = self.Client._Http.invokeAPI(httpMethod=RestConstant.POST,
+                                                                     function_uri=RestConstant.REGISTER_GROUP_URI,
+                                                                     payload=json.dumps(_payload))
         if _status_code == 201:  # Creat success
             _response = json.loads(_text)
             if _response.get('variables'):
@@ -37,16 +38,18 @@ class DataGroup(object):
             _reason = _hearders.get('WWW-Authenticate')
             logging.error(str(_reason))
             raise RESTException(_reason)  # Bearer realm="pxcapi", error="invalid_token"
+        elif _status_code == 410:  # sessionID不正确
+            logging.error('invalidSessionID')
+            raise RESTException('invalidSessionID')
 
     @staticmethod
     def _ReadGroupValues(ReadGroup):
-        if ReadGroup.groupID == None or ReadGroup.clientInfo.accessToken == None:
+        if ReadGroup.groupID == None or ReadGroup.Client.accessToken == None:
             return
         _url = RestConstant.READ_GROUP_URI + ReadGroup.groupID
-        _status_code, _hearders, _text = RESTHttpClient.invokeAPI(httpMethod=RestConstant.GET,
-                                                                  function_uri=_url,
-                                                                  clientInfo=ReadGroup.clientInfo,
-                                                                  payload=None)
+        _status_code, _hearders, _text = ReadGroup.Client._Http.invokeAPI(httpMethod=RestConstant.GET,
+                                                                          function_uri=_url,
+                                                                          payload=None)
         if _status_code == 200:
             _response = json.loads(_text)
             if _response.get('id') == ReadGroup.groupID:
@@ -71,6 +74,9 @@ class DataGroup(object):
             _reason = _response.get('error').get('details')[0].get('reason')
             logging.error(_reason)
             raise RESTException(_reason)
+        elif _status_code == 410:  # sessionID不正确
+            logging.error('invalidSessionID')
+            raise RESTException('invalidSessionID')
 
     # @staticmethod
     # def Unregister(GroupInfo):
@@ -84,18 +90,16 @@ class DataGroup(object):
     #                                                               payload=None)
     #     pass
 
-    @staticmethod
     def _ReportGroups(self):
-        if self.accessToken == None:
+        if self.Client.accessToken == None:
             return
-        _status_code, _hearders, _text = RESTHttpClient.invokeAPI(httpMethod=RestConstant.GET,
-                                                                  function_uri=RestConstant.REPORT_GROUP_URI,
-                                                                  clientInfo=self,
-                                                                  payload=None)
+        _status_code, _hearders, _text = self.Client._Http.invokeAPI(httpMethod=RestConstant.GET,
+                                                                     function_uri=RestConstant.REPORT_GROUP_URI,
+                                                                     payload=None)
         if _status_code == 200:
             _response = json.loads(_text).get('groups')
-            self.groupReportResult = _response
-            return self.groupReportResult
+            self.Client.groupReportResult = _response
+            return _response
         elif _status_code == 401:  # 令牌不正确loads
             self.accessToken = None
             _reason = _hearders.get('WWW-Authenticate')
@@ -106,15 +110,18 @@ class DataGroup(object):
             _reason = _response.get('error').get('details')[0].get('reason')
             logging.error(_reason)
             raise RESTException(_reason)
+        elif _status_code == 410:  # sessionID不正确
+            logging.error('invalidSessionID')
+            raise RESTException('invalidSessionID')
 
 
 class ReadGroup(object):
-    def __init__(self, vars, Parent, groupID=None, varName=None, prefix=None):
+    def __init__(self, vars, Client, groupID=None, varName=None, prefix=None):
         self.groupID = groupID
         self.vars = vars
         self.valves = None
-        self.clientInfo = Parent
-        self._Parent = Parent
+        # self.clientInfo = Client
+        self.Client = Client
         self.__reConnectCount = 0
         self.__reFreshCount = 0
         self._Results = {}
@@ -131,10 +138,11 @@ class ReadGroup(object):
         _res = self.results_dict
         _resultList = list()
         for var in self._varName_BACKUP:
-            _resultList.append(_res.get(var,None))
-        return _resultList
-
-
+            _resultList.append(_res.get(var, None))
+        if len(self._varName_BACKUP) == 1:
+            return _resultList[0]
+        else:
+            return _resultList
 
     def __getitem__(self, item):
         self._Read()
@@ -142,7 +150,7 @@ class ReadGroup(object):
 
     def __str__(self):
         return 'groupID : ' + str(self.groupID) + ' | vars : ' + str(self.vars) + ' | valves : ' + str(
-            self.valves) + " | " + str(self.clientInfo)
+            self.valves) + " | " + str(self.Client)
 
     def checkMemberType(self):
         _ResultDict = dict()
@@ -153,9 +161,9 @@ class ReadGroup(object):
 
     def _Read(self):
         while True:
-            if self._Parent.accessToken == None:
+            if self.Client.accessToken == None:
                 logging.error("Impossible to call " + (sys._getframe().f_code.co_name) + " without token")
-                self._Parent.Connect()
+                self.Client.Connect()
             try:
                 Result = DataGroup._ReadGroupValues(self)
                 self.__reConnectCount = 0
@@ -165,14 +173,17 @@ class ReadGroup(object):
             except RESTException as E:
                 if 'invalid_token' in E.message and self.__reConnectCount < 2:
                     self.__reConnectCount += 1
-                    self._Parent._reConnect()
-                if 'invalidGroupID' in E.message and self.__reFreshCount < 2:
+                    self.Client._reConnect()
+                elif 'invalidGroupID' in E.message and self.__reFreshCount < 2:
                     logging.info('Trying to refresh group ID')
                     self.__reFreshCount += 1
                     self.refreshID()
+                elif 'invalidSessionID' in E.message and self.__reFreshCount < 2:
+                    self.Client._Session._createSessionID()
+
                 else:
                     raise E
 
     def refreshID(self):
-        __newID, __NewRes = self._Parent.registerReadGroups(self._varName_BACKUP, self._prefix_BACKUP, _object=False)
+        __newID, __NewRes = self.Client.registerReadGroups(self._varName_BACKUP, self._prefix_BACKUP, _object=False)
         self.groupID = __newID

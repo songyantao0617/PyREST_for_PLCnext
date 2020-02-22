@@ -1,5 +1,6 @@
 import logging
 
+
 class DefaultValue():
     USERNAME = 'admin'
     PASSWD = '123456'

@@ -3,6 +3,7 @@ import logging.config
 
 from com.Phoenixcontact.default import *
 
+
 class ClientInfo(object):
 
     def __init__(self):
@@ -11,9 +12,9 @@ class ClientInfo(object):
         self._PassWord = DefaultValue.PASSWD
         self._Port = DefaultValue.PORT
         self.accessToken = None
-        self.authToken = None
         self.groupInfo = None
         self.groupReportResult = None
+        self._acvite = False
 
     def __getPassword(self):
         return self._PassWord
