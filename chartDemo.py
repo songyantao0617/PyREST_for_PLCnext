@@ -28,5 +28,5 @@ def chartDemo(ip, passwd):
 
 
 if __name__ == "__main__":
-    # PLCnext's IP and Password
+    # set PLCnext's IP and Password here
     chartDemo('192.168.124.10', '42bad0fd')
