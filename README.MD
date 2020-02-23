@@ -1,6 +1,6 @@
 songyantao@phoenixcontact.com.cn
 
-**Now for internal use only**  V0.3 
+**Now for internal use only**  V0.4
 ## set up variables on PLC and give them HMI_Tag :
 
   ```
@@ -73,3 +73,13 @@ This Demo shows PLC's TICK_COUNT
 + make sure 'matplotlib' has been installed
 ---
 ![1](./asset/tickcount.jpg)
+
+---
+# asynchronous
+## Read
+check `asynvDemo_read.py`
+
+---
+## Write
+
+developing...
