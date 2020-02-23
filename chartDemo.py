@@ -3,7 +3,7 @@ import com.Phoenixcontact.REST as PLCnREST
 
 '''
 This Demo shows PLC's TICK_COUNT
-Before run , creat a empty EHMI on PLCnext
+Before run , creat an empty EHMI on PLCnext
 make sure 'matplotlib' has been installed
 '''
 
@@ -11,7 +11,7 @@ make sure 'matplotlib' has been installed
 def chartDemo(ip, passwd):
     # creat client
     client = PLCnREST.NewClient(ip)
-    client.PLCnPasswd = passwd
+    client.PLCnPasswd = passwd  # default username = admin
     client.connect()
     plt.title('PLCnext  TICK_COUNT')
     plt.axis([0, 100, 0, 1000])
