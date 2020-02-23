@@ -15,12 +15,16 @@ class HttpClient(object):
         requests.packages.urllib3.disable_warnings()
         # self.loop = asyncio.get_event_loop()
 
+    def mount(self,pool_connections=5,pool_maxsize=120):
+        self.request.mount('https://', HTTPAdapter(pool_connections, pool_maxsize))
+
+    def NewSession(self):
+        self.request = requests.Session()
+
     def syncRequest(self, httpMethod, url, headers, payload, Params=None):
         try:
             if self.request == None:
                 self.request = requests.Session()
-            self.request.mount('https://', HTTPAdapter(pool_connections=20, pool_maxsize=250))
-
             # global response
             if httpMethod == "POST":
                 response = self.request.post(url, headers=headers, data=payload, cert=self.cert, verify=False,

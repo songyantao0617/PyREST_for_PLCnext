@@ -121,8 +121,9 @@ import threading, asyncio, time
 
 
 class AsyncRead(threading.Thread):
-    def __init__(self, ReadGroup, threadID, name):
+    def __init__(self, ReadGroup, threadID, name,poolSize):
         super().__init__(daemon=True)
+        self.poolSize = poolSize
         self.threadID = threadID
         self.name = name
         self.disbleThread = False
@@ -136,7 +137,7 @@ class AsyncRead(threading.Thread):
     def run(self):
         self.disbleThread = False
         logging.info('AsyncGroup start ')
-        tasks = [self._body(i) for i in range(200)]
+        tasks = [self._body(i) for i in range(self.poolSize)]
         self.loop.run_until_complete(asyncio.wait(tasks))
         logging.info('AsyncGroup stop ')
 
@@ -305,9 +306,10 @@ class ReadGroup(object):
         __newID, __NewRes = self.Client.registerReadGroups(self._varName_BACKUP, self._prefix_BACKUP, _object=False)
         self.groupID = __newID
 
-    def asyncStart(self):
+    def asyncStart(self,poolSize = 100,):
+        self.Client._Http.mount(pool_connections=5,pool_maxsize=120)
         if self._asynThread == None:
-            self._asynThread = AsyncRead(self, 2, 'AsyncRead_1')
+            self._asynThread = AsyncRead(self, 2, 'AsyncRead_1',poolSize)
             if 'ESM_DATA.ESM_INFOS[1].TICK_COUNT' in self._varName_BACKUP:
                 if self._asynThread.isAlive() == False:
                     self._asynThread.start()
@@ -320,6 +322,7 @@ class ReadGroup(object):
             self._asynThread.disbleThread = True
             self._asynThread.join()
             self._asynThread = None
+            self.Client._Http.NewSession()
         else:
             logging.error('No asyncTask instance , Have you start ?')
             raise RESTException('No asyncTask instance')
