@@ -95,7 +95,7 @@ class Session(threading.Thread):
         raise RESTException('Can not maintain session ID' + str(_r))
 
     def _keep_alive(self):
-        print('----------')
+        # print('----------')
         _retryConut = 0
         if self.sessionID == None:
             self._getApiInfo()

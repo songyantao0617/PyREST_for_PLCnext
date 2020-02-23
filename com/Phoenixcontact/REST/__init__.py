@@ -18,7 +18,7 @@ class NewClient(ClientInfo):
         super().__init__()
         self.PLCnIp = IPaddress
         self.__reConnectCount = 0
-        self.sessionMode = False
+        self.sessionMode = True
         self._Http = RESTHttpclient(self)
         self._DataGroup = DataGroup(self)
         self._Authentication = Authentication(self)
@@ -108,6 +108,7 @@ class NewClient(ClientInfo):
             return _Result[0]
         else:
             return _Result
+
 
     def writeDatas(self, variablesDict, pathPrefix=RestConstant.PATHPREFIX):
         while True:

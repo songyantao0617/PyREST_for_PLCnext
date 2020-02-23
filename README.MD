@@ -63,3 +63,13 @@ show the group information belongs to client:
 
 
 ```
+
+# chart demo
+ --- `chartDemo.py`
+ 
+This Demo shows PLC's TICK_COUNT
+
++ Before run , creat a empty EHMI on PLCnext
++ make sure 'matplotlib' has been installed
+---
+![1](./asset/tickcount.jpg)
