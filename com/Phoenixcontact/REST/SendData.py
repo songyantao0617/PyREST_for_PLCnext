@@ -16,9 +16,9 @@ class SendData(object):
             'variables': variables
         }
 
-        _status_code, _hearders, _text = self.Client._Http.invokeAPI(httpMethod=RestConstant.PUT,
-                                                                function_uri=RestConstant.WRITE_VARIABLES_PUT_URI,
-                                                                payload=json.dumps(_data))
+        _status_code, _hearders, _text = self.Client._Http.syncHttpAPI(httpMethod=RestConstant.PUT,
+                                                                       function_uri=RestConstant.WRITE_VARIABLES_PUT_URI,
+                                                                       payload=json.dumps(_data))
 
         if _status_code == 200:
             _response = json.loads(_text)

@@ -40,9 +40,9 @@ class Session(threading.Thread):
     def _getApiInfo(self):
         logging.debug('trying to get api information ...')
         for i in range(3):
-            _status_code, _hearders, _text = self.client._Http.invokeAPI(httpMethod=RestConstant.GET,
-                                                                         function_uri=RestConstant.SERVICE_DESCRIPTION_URI,
-                                                                         payload=None)
+            _status_code, _hearders, _text = self.client._Http.syncHttpAPI(httpMethod=RestConstant.GET,
+                                                                           function_uri=RestConstant.SERVICE_DESCRIPTION_URI,
+                                                                           payload=None)
             if _status_code == 200:
                 _response = json.loads(_text)
                 if 'apiVersion' in _response and 'version' in _response:
@@ -63,9 +63,9 @@ class Session(threading.Thread):
         for i in range(3):
             _randint = random.randint(100, 999)
             _payload = 'stationID=' + str(_randint)
-            _status_code, _hearders, _text = self.client._Http.invokeAPI(httpMethod=RestConstant.POST,
-                                                                         function_uri=RestConstant.CREATE_SESSION_URI,
-                                                                         payload=_payload)
+            _status_code, _hearders, _text = self.client._Http.syncHttpAPI(httpMethod=RestConstant.POST,
+                                                                           function_uri=RestConstant.CREATE_SESSION_URI,
+                                                                           payload=_payload)
             if _status_code == 201:
                 _response = json.loads(_text)
                 if 'sessionID' in _response:
@@ -81,9 +81,9 @@ class Session(threading.Thread):
         logging.debug('Maintain SessionID ...')
         _uri = RestConstant.MAINTAIN_SESSION_URI + self.sessionID
         for i in range(3):
-            _status_code, _hearders, _text = self.client._Http.invokeAPI(httpMethod=RestConstant.POST,
-                                                                         function_uri=_uri,
-                                                                         payload=None)
+            _status_code, _hearders, _text = self.client._Http.syncHttpAPI(httpMethod=RestConstant.POST,
+                                                                           function_uri=_uri,
+                                                                           payload=None)
             if _status_code == 200:
                 return
             if _status_code == 410:  # ID失效

@@ -19,9 +19,9 @@ class BasicRead(object):
             'paths': ','.join(variableNames)
         }
 
-        _status_code, _hearders, _text = self.Client._Http.invokeAPI(httpMethod=RestConstant.GET,
-                                                                     function_uri=RestConstant.READ_VARIABLES_GET_URI,
-                                                                     payload=None, Params=_data)
+        _status_code, _hearders, _text = self.Client._Http.syncHttpAPI(httpMethod=RestConstant.GET,
+                                                                       function_uri=RestConstant.READ_VARIABLES_GET_URI,
+                                                                       payload=None, Params=_data)
 
         if _status_code == 200:
             _response = json.loads(_text)

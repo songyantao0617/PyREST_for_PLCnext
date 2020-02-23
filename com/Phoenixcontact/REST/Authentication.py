@@ -20,9 +20,9 @@ class Authentication(object):
                     'scope': RestConstant.TEMPORARY_TOCKEN_BODY_SCOPE_VALUES}
 
         for i in range(3):
-            _status_code, _hearders, _text = self.client._Http.invokeAPI(httpMethod=RestConstant.POST,
-                                                                         function_uri=RestConstant.TEMPORARY_TOCKEN_URI,
-                                                                         payload=json.dumps(_payload))
+            _status_code, _hearders, _text = self.client._Http.syncHttpAPI(httpMethod=RestConstant.POST,
+                                                                           function_uri=RestConstant.TEMPORARY_TOCKEN_URI,
+                                                                           payload=json.dumps(_payload))
             if _status_code == 200:
                 _response = json.loads(_text)
                 if _response['state'] == _uuid:
@@ -41,9 +41,9 @@ class Authentication(object):
                 'username': self.client.PLCnUserName,
                 'password': self.client.PLCnPasswd
             }
-            _status_code, _hearders, _text = self.client._Http.invokeAPI(httpMethod=RestConstant.POST,
-                                                                         function_uri=RestConstant.ACCESS_TOCKEN_URI,
-                                                                         payload=json.dumps(_payload))
+            _status_code, _hearders, _text = self.client._Http.syncHttpAPI(httpMethod=RestConstant.POST,
+                                                                           function_uri=RestConstant.ACCESS_TOCKEN_URI,
+                                                                           payload=json.dumps(_payload))
             if _status_code == 200:
                 _response = json.loads(_text)
                 if _response['state'] == self.authToken:
