@@ -33,15 +33,14 @@ def asyncDemo(ip, passwd):
     print('*'*50)
     ##########################################################
 
-    time.sleep(3)
-    print('async mode :')
+
 
     # call this will change to async mode
-    asyncGroup.asyncStart(poolSize=50)
-
+    poolSize = 50
+    asyncGroup.asyncStart(poolSize=poolSize)
+    print('async mode (with pool size = {}):'.format(poolSize))
     lastValue = 0
     _exit = 0
-
     while _exit < 40:
 
         # use asyncMode, Just read values (non-block)
