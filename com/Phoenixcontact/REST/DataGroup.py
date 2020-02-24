@@ -307,7 +307,7 @@ class ReadGroup(object):
         self.groupID = __newID
 
     def asyncStart(self,poolSize = 100,):
-        self.Client._Http.mount(pool_connections=5,pool_maxsize=120)
+        self.Client._Http.mount(pool_connections=5,pool_maxsize=poolSize+20)
         if self._asynThread == None:
             self._asynThread = AsyncRead(self, 2, 'AsyncRead_1',poolSize)
             if 'ESM_DATA.ESM_INFOS[1].TICK_COUNT' in self._varName_BACKUP:

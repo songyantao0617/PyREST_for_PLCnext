@@ -37,12 +37,12 @@ def asyncDemo(ip, passwd):
     print('async mode :')
 
     # call this will change to async mode
-    asyncGroup.asyncStart(100)
+    asyncGroup.asyncStart(poolSize=50)
 
     lastValue = 0
-    exit = 0
+    _exit = 0
 
-    while exit < 40:
+    while _exit < 40:
 
         # use asyncMode, Just read values (non-block)
         result = asyncGroup.results_dict
@@ -57,7 +57,7 @@ def asyncDemo(ip, passwd):
 
             lastStamp = currentStamp
             lastValue = itc
-            exit += 1
+            _exit += 1
 
     asyncGroup.asyncStop()
 
