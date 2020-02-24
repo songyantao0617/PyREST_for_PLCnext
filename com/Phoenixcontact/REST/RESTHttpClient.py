@@ -1,13 +1,11 @@
 from com.Phoenixcontact.REST.Constant import RestConstant
-from com.Phoenixcontact.utils.Http import HttpClient
+from com.Phoenixcontact.utils.Http import HttpClient_requests
 import asyncio
 
-class RESTHttpclient(HttpClient):
+class RESTHttpclient(HttpClient_requests):
     def __init__(self,Client):
         super().__init__()
         self.Client = Client
-
-
 
     def syncHttpAPI(self, httpMethod, function_uri, payload, Params=None, headers_=None):
 
